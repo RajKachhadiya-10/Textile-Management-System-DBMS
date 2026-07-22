@@ -1,10 +1,13 @@
 @startuml
 !theme silver
 top to bottom direction
-skinparam dpi 300
+scale 0.8
+skinparam dpi 150
+skinparam ranksep 35
+skinparam nodesep 20
+skinparam packagePadding 10
 skinparam classFontSize 10
 skinparam classFontName "Helvetica"
-skinparam monochrome false
 skinparam classBackgroundColor #F8FAFC
 skinparam classHeaderBackgroundColor #0F172A
 skinparam classHeaderFontColor #FFFFFF
@@ -371,50 +374,50 @@ package "Worker & Shift Allocation Domain" {
   }
 }
 
-' Relationships & Foreign Key Connections
-Employee }|..|| Department : "belongs to"
-Employee }|..|| Employee : "supervised by"
-Department ||..o| Employee : "managed by"
-ExtraEmployeeDetails ||..|| Employee : "1:1 extension"
-Dependent }|..|| Employee : "dependent of"
-Attendance }|..|| Employee : "recorded for"
+' Relationships
+Employee }|..|| Department
+Employee }|..|| Employee
+Department ||..o| Employee
+ExtraEmployeeDetails ||..|| Employee
+Dependent }|..|| Employee
+Attendance }|..|| Employee
 Employee_Shift }|..|| Employee
 Employee_Shift }|..|| Shift
 
-Company }|..|| Employee : "represented by"
+Company }|..|| Employee
 Company_Type }|..|| Company
 Company_Location }|..|| Company
 Company_RawMaterial }|..|| Company
 Company_RawMaterial }|..|| RawMaterial
 
-PurchaseOrder }|..|| Department : "managed by"
+PurchaseOrder }|..|| Department
 PurchaseOrder_RawMaterial }|..|| PurchaseOrder
 PurchaseOrder_RawMaterial }|..|| RawMaterial
 
 PO_Company }|..|| PurchaseOrder
 PO_Company }|..|| Company
-PO_Company ||..|| OrderInvoice : "linked to"
+PO_Company ||..|| OrderInvoice
 
-Vehicle }|..|| Company : "owned by"
-Consignment }|..|| Vehicle : "transported by"
-Consignment }|..|| Warehouse : "delivered to"
-Consignment }|..|| PurchaseOrder : "fulfills"
+Vehicle }|..|| Company
+Consignment }|..|| Vehicle
+Consignment }|..|| Warehouse
+Consignment }|..|| PurchaseOrder
 Consignment_RawMaterial }|..|| Consignment
 Consignment_RawMaterial }|..|| RawMaterial
 
-Warehouse }|..|| Department : "managed by"
+Warehouse }|..|| Department
 RawMaterial_Warehouse }|..|| RawMaterial
 RawMaterial_Warehouse }|..|| Warehouse
 RawMaterial_Department }|..|| RawMaterial
 RawMaterial_Department }|..|| Department
 
-ProductionOrder }|..|| Department : "planned by"
-ProductionOrder }|..|| FinalMaterial : "produces"
+ProductionOrder }|..|| Department
+ProductionOrder }|..|| FinalMaterial
 ProductionOrder_RawMaterial_Warehouse }|..|| ProductionOrder
 ProductionOrder_RawMaterial_Warehouse }|..|| RawMaterial_Warehouse
 
-PhaseExecution }|..|| ProductionOrder : "phase of"
-PhaseExecution }|..|| Department : "executed in"
+PhaseExecution }|..|| ProductionOrder
+PhaseExecution }|..|| Department
 PhaseExecution }|..o| FinalMaterial
 PhaseTimeLog }|..|| PhaseExecution
 PhaseResourceConsumption }|..|| PhaseExecution
@@ -426,7 +429,7 @@ FabricRoll }|..|| PackingBatch
 FabricRoll }|..|| Warehouse
 FabricRoll }|..|| FinalMaterial
 
-Worker }|..|| Employee : "owned by"
+Worker }|..|| Employee
 Worker_Department }|..|| Worker
 Worker_Department }|..|| Department
 WorkerDept_Shift }|..|| Worker_Department

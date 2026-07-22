@@ -38,7 +38,9 @@ The system covers 7 core operational business domains:
 
 The system architecture is modeled with **21 Logical ER Entities** and **34 Physical Relations** (including weak entities, junction tables, and 3-way ternary wage/resource aggregations).
 
-![Textile DBMS ER Diagram](docs/ER_diagram.png)
+<p align="center">
+  <img src="docs/ER_diagram.png" alt="Textile DBMS ER Diagram" width="100%" max-width="900px" />
+</p>
 
 *Source files available in PlantUML ([`docs/er_diagram.puml`](docs/er_diagram.puml)) and Mermaid ([`docs/er_diagram.mmd`](docs/er_diagram.mmd)).*
 
