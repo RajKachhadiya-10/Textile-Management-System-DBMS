@@ -22,7 +22,7 @@ The system covers 7 core operational business domains:
 
 - **Database Engine**: PostgreSQL (12+)
 - **SQL Standards**: ANSI SQL compliant with PostgreSQL dialect extensions (window functions, CTEs, interval arithmetic, JSON/type casting).
-- **Design Methodology**: Entity-Relationship Modeling, Relational Synthesis, Formal Normalization up to **Fifth Normal Form (5NF)**.
+- **Design Methodology**: Entity-Relationship Modeling, Relational Synthesis, Formal Normalization up to **Boyce-Codd Normal Form (BCNF)**.
 
 ---
 
@@ -46,57 +46,57 @@ The system architecture is modeled with **21 Logical ER Entities** and **34 Phys
 
 ---
 
-## 📐 Formal Normalization Summary (5NF Proof)
+## 📐 Formal Normalization Summary (BCNF Proof)
 
-All 34 relations in the schema have been derived from scratch and verified to achieve **Fifth Normal Form (5NF)**.
+All 34 relations in the schema have been derived from scratch and verified to achieve **Boyce-Codd Normal Form (BCNF)**.
 
 ### Formal Normalization Criteria
 - **BCNF**: For every non-trivial Functional Dependency $X \rightarrow Y$, $X$ is a candidate key (superkey).
 - **4NF**: For every non-trivial Multi-Valued Dependency $X \twoheadrightarrow Y$, $X$ is a superkey.
-- **5NF**: Every non-trivial Join Dependency $\bowtie(R_1, R_2, \dots, R_n)$ is implied by the candidate keys of $R$.
+- **BCNF**: Every non-trivial Join Dependency $\bowtie(R_1, R_2, \dots, R_n)$ is implied by the candidate keys of $R$.
 
 ### Summary Table of Verified Schema Relations
 
 | Relation Name | Primary Key | Candidate Keys | Highest Normal Form |
 | :--- | :--- | :--- | :--- |
-| `Department` | `Dept_ID` | `{Dept_ID}`, `{Dept_Name}` | **5NF** |
-| `Employee` | `Emp_ID` | `{Emp_ID}`, `{Company_Email}` | **5NF** |
-| `Company` | `Company_ID` | `{Company_ID}`, `{Company_Email}`, `{GSTIN}` | **5NF** |
-| `Company_Type` | `(Company_ID, Company_Type)` | `{(Company_ID, Company_Type)}` | **5NF** |
-| `Company_Location` | `(Company_ID, PIN)` | `{(Company_ID, PIN)}` | **5NF** |
-| `Shift` | `Shift_ID` | `{Shift_ID}` | **5NF** |
-| `OrderInvoice` | `Invoice_ID` | `{Invoice_ID}` | **5NF** |
-| `RawMaterial` | `Material_ID` | `{Material_ID}` | **5NF** |
-| `Warehouse` | `Warehouse_ID` | `{Warehouse_ID}` | **5NF** |
-| `Vehicle` | `VehicleNo` | `{VehicleNo}`, `{License_Number}` | **5NF** |
-| `PurchaseOrder` | `Order_ID` | `{Order_ID}` | **5NF** |
-| `Consignment` | `Consignment_ID` | `{Consignment_ID}` | **5NF** |
-| `ExtraEmployeeDetails` | `Emp_ID` | `{Emp_ID}` | **5NF** |
-| `Dependent` | `(Emp_ID, Dep_Name)` | `{(Emp_ID, Dep_Name)}` | **5NF** |
-| `Attendance` | `(Emp_ID, Att_Date)` | `{(Emp_ID, Att_Date)}` | **5NF** |
-| `Employee_Shift` | `(Emp_ID, Shift_ID)` | `{(Emp_ID, Shift_ID)}` | **5NF** |
-| `FinalMaterial` | `Product_ID` | `{Product_ID}` | **5NF** |
-| `ProductionOrder` | `Order_ID` | `{Order_ID}` | **5NF** |
-| `PhaseExecution` | `(Order_ID, Seq_No)` | `{(Order_ID, Seq_No)}` | **5NF** |
-| `PhaseTimeLog` | `(Log_ID, Order_ID, Seq_No)` | `{(Log_ID, Order_ID, Seq_No)}` | **5NF** |
-| `PhaseResourceConsumption` | `(Consumption_ID, Order_ID, Seq_No)` | `{(Consumption_ID, Order_ID, Seq_No)}` | **5NF** |
-| `ResourceConsumed` | `(Consumption_ID, Order_ID, Seq_No, Resource_Type)` | `{(Consumption_ID, Order_ID, Seq_No, Resource_Type)}` | **5NF** |
-| `Worker` | `Worker_ID` | `{Worker_ID}` | **5NF** |
-| `PackingBatch` | `Packing_ID` | `{Packing_ID}` | **5NF** |
-| `FabricRoll` | `Roll_ID` | `{Roll_ID}` | **5NF** |
-| `Company_RawMaterial` | `(Company_ID, Material_ID)` | `{(Company_ID, Material_ID)}` | **5NF** |
-| `RawMaterial_Warehouse` | `(Material_ID, Warehouse_ID)` | `{(Material_ID, Warehouse_ID)}` | **5NF** |
-| `RawMaterial_Department` | `(Material_ID, Dept_ID)` | `{(Material_ID, Dept_ID)}` | **5NF** |
-| `Consignment_RawMaterial` | `(Consignment_ID, Material_ID)` | `{(Consignment_ID, Material_ID)}` | **5NF** |
-| `PurchaseOrder_RawMaterial` | `(Order_ID, Material_ID)` | `{(Order_ID, Material_ID)}` | **5NF** |
-| `PO_Company` | `(Order_ID, Company_ID)` | `{(Order_ID, Company_ID)}`, `{Invoice_ID}` | **5NF** |
-| `ProductionOrder_RawMaterial_Warehouse` | `(Order_ID, Material_ID, Warehouse_ID)` | `{(Order_ID, Material_ID, Warehouse_ID)}` | **5NF** |
-| `Worker_Department` | `(Worker_ID, Dept_ID)` | `{(Worker_ID, Dept_ID)}` | **5NF** |
-| `WorkerDept_Shift` | `(Worker_ID, Dept_ID, Shift_ID)` | `{(Worker_ID, Dept_ID, Shift_ID)}` | **5NF** |
-| `Worker_PackingBatch` | `(Worker_ID, Packing_ID)` | `{(Worker_ID, Packing_ID)}` | **5NF** |
-| `WorkerPacking_Shift` | `(Worker_ID, Packing_ID, Shift_ID)` | `{(Worker_ID, Packing_ID, Shift_ID)}` | **5NF** |
-| `Worker_Warehouse` | `(Worker_ID, Warehouse_ID)` | `{(Worker_ID, Warehouse_ID)}` | **5NF** |
-| `WorkerWarehouse_Shift` | `(Worker_ID, Warehouse_ID, Shift_ID)` | `{(Worker_ID, Warehouse_ID, Shift_ID)}` | **5NF** |
+| `Department` | `Dept_ID` | `{Dept_ID}`, `{Dept_Name}` | **BCNF** |
+| `Employee` | `Emp_ID` | `{Emp_ID}`, `{Company_Email}` | **BCNF** |
+| `Company` | `Company_ID` | `{Company_ID}`, `{Company_Email}`, `{GSTIN}` | **BCNF** |
+| `Company_Type` | `(Company_ID, Company_Type)` | `{(Company_ID, Company_Type)}` | **BCNF** |
+| `Company_Location` | `(Company_ID, PIN)` | `{(Company_ID, PIN)}` | **BCNF** |
+| `Shift` | `Shift_ID` | `{Shift_ID}` | **BCNF** |
+| `OrderInvoice` | `Invoice_ID` | `{Invoice_ID}` | **BCNF** |
+| `RawMaterial` | `Material_ID` | `{Material_ID}` | **BCNF** |
+| `Warehouse` | `Warehouse_ID` | `{Warehouse_ID}` | **BCNF** |
+| `Vehicle` | `VehicleNo` | `{VehicleNo}`, `{License_Number}` | **BCNF** |
+| `PurchaseOrder` | `Order_ID` | `{Order_ID}` | **BCNF** |
+| `Consignment` | `Consignment_ID` | `{Consignment_ID}` | **BCNF** |
+| `ExtraEmployeeDetails` | `Emp_ID` | `{Emp_ID}` | **BCNF** |
+| `Dependent` | `(Emp_ID, Dep_Name)` | `{(Emp_ID, Dep_Name)}` | **BCNF** |
+| `Attendance` | `(Emp_ID, Att_Date)` | `{(Emp_ID, Att_Date)}` | **BCNF** |
+| `Employee_Shift` | `(Emp_ID, Shift_ID)` | `{(Emp_ID, Shift_ID)}` | **BCNF** |
+| `FinalMaterial` | `Product_ID` | `{Product_ID}` | **BCNF** |
+| `ProductionOrder` | `Order_ID` | `{Order_ID}` | **BCNF** |
+| `PhaseExecution` | `(Order_ID, Seq_No)` | `{(Order_ID, Seq_No)}` | **BCNF** |
+| `PhaseTimeLog` | `(Log_ID, Order_ID, Seq_No)` | `{(Log_ID, Order_ID, Seq_No)}` | **BCNF** |
+| `PhaseResourceConsumption` | `(Consumption_ID, Order_ID, Seq_No)` | `{(Consumption_ID, Order_ID, Seq_No)}` | **BCNF** |
+| `ResourceConsumed` | `(Consumption_ID, Order_ID, Seq_No, Resource_Type)` | `{(Consumption_ID, Order_ID, Seq_No, Resource_Type)}` | **BCNF** |
+| `Worker` | `Worker_ID` | `{Worker_ID}` | **BCNF** |
+| `PackingBatch` | `Packing_ID` | `{Packing_ID}` | **BCNF** |
+| `FabricRoll` | `Roll_ID` | `{Roll_ID}` | **BCNF** |
+| `Company_RawMaterial` | `(Company_ID, Material_ID)` | `{(Company_ID, Material_ID)}` | **BCNF** |
+| `RawMaterial_Warehouse` | `(Material_ID, Warehouse_ID)` | `{(Material_ID, Warehouse_ID)}` | **BCNF** |
+| `RawMaterial_Department` | `(Material_ID, Dept_ID)` | `{(Material_ID, Dept_ID)}` | **BCNF** |
+| `Consignment_RawMaterial` | `(Consignment_ID, Material_ID)` | `{(Consignment_ID, Material_ID)}` | **BCNF** |
+| `PurchaseOrder_RawMaterial` | `(Order_ID, Material_ID)` | `{(Order_ID, Material_ID)}` | **BCNF** |
+| `PO_Company` | `(Order_ID, Company_ID)` | `{(Order_ID, Company_ID)}`, `{Invoice_ID}` | **BCNF** |
+| `ProductionOrder_RawMaterial_Warehouse` | `(Order_ID, Material_ID, Warehouse_ID)` | `{(Order_ID, Material_ID, Warehouse_ID)}` | **BCNF** |
+| `Worker_Department` | `(Worker_ID, Dept_ID)` | `{(Worker_ID, Dept_ID)}` | **BCNF** |
+| `WorkerDept_Shift` | `(Worker_ID, Dept_ID, Shift_ID)` | `{(Worker_ID, Dept_ID, Shift_ID)}` | **BCNF** |
+| `Worker_PackingBatch` | `(Worker_ID, Packing_ID)` | `{(Worker_ID, Packing_ID)}` | **BCNF** |
+| `WorkerPacking_Shift` | `(Worker_ID, Packing_ID, Shift_ID)` | `{(Worker_ID, Packing_ID, Shift_ID)}` | **BCNF** |
+| `Worker_Warehouse` | `(Worker_ID, Warehouse_ID)` | `{(Worker_ID, Warehouse_ID)}` | **BCNF** |
+| `WorkerWarehouse_Shift` | `(Worker_ID, Warehouse_ID, Shift_ID)` | `{(Worker_ID, Warehouse_ID, Shift_ID)}` | **BCNF** |
 
 *For complete step-by-step mathematical proofs and discrepancy corrections from prior documentation, refer to [`/docs/normalization_proof.pdf`](docs/normalization_proof.pdf).*
 
@@ -112,7 +112,7 @@ Textile-Management-System-DBMS/
 │   └── queries.sql          # SQL analytical queries and business reporting scenarios
 ├── docs/
 │   ├── ER_diagram.png       # Complete Entity-Relationship (ER) Diagram
-│   ├── normalization_proof.pdf # Verified 5NF formal mathematical proofs document
+│   ├── normalization_proof.pdf # Verified BCNF formal mathematical proofs document
 │   └── project_report.pdf   # Complete project documentation report
 ├── README.md                # Project documentation and portfolio overview
 └── .gitignore               # System, IDE, environment, and temp file exclusions
