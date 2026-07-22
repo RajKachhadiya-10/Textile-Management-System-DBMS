@@ -1,0 +1,445 @@
+@startuml
+!theme silver
+top to bottom direction
+skinparam dpi 300
+skinparam classFontSize 10
+skinparam classFontName "Helvetica"
+skinparam monochrome false
+skinparam classBackgroundColor #F8FAFC
+skinparam classHeaderBackgroundColor #0F172A
+skinparam classHeaderFontColor #FFFFFF
+skinparam classBorderColor #0F172A
+
+package "HR & Department Domain" {
+  entity "Department" as Department {
+    * Dept_ID : VARCHAR(20) <<PK>>
+    --
+    * Dept_Name : VARCHAR(100) <<UNIQUE>>
+    Manager_Emp_ID : VARCHAR(20) <<FK>>
+  }
+
+  entity "Employee" as Employee {
+    * Emp_ID : VARCHAR(20) <<PK>>
+    --
+    * FName : VARCHAR(50)
+    MName : VARCHAR(50)
+    * LName : VARCHAR(50)
+    * Phone : VARCHAR(15)
+    Personal_Email : VARCHAR(100)
+    * Company_Email : VARCHAR(100) <<UNIQUE>>
+    * Date_Of_Birth : DATE
+    * Salary : NUMERIC(12,2)
+    * Gender : VARCHAR(10)
+    * Job_Title : VARCHAR(100)
+    * isActive : BOOLEAN
+    * Dept_ID : VARCHAR(20) <<FK>>
+    * Date_Assigned : DATE
+    * Supervisor_ID : VARCHAR(20) <<FK>>
+  }
+
+  entity "ExtraEmployeeDetails" as ExtraEmployeeDetails {
+    * Emp_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Account_Number : VARCHAR(30)
+    * IFSC_Code : VARCHAR(15)
+    * Bank_Name : VARCHAR(100)
+    * Branch_Name : VARCHAR(100)
+    * Policy_Number : VARCHAR(30)
+    * Provider_Name : VARCHAR(100)
+    * Coverage_Amount : NUMERIC(12,2)
+    * Insurance_Start_Date : DATE
+    * Insurance_End_Date : DATE
+    * Address_Details : TEXT
+    * PIN : VARCHAR(10)
+    * City : VARCHAR(50)
+    * State : VARCHAR(50)
+    * Date_Of_Joining : DATE
+    * Blood_Group : VARCHAR(5)
+    * Doc_Type : VARCHAR(50)
+    * Doc_Number : VARCHAR(50)
+  }
+
+  entity "Dependent" as Dependent {
+    * Emp_ID : VARCHAR(20) <<PK, FK>>
+    * Dep_Name : VARCHAR(100) <<PK>>
+    --
+    * Relationship : VARCHAR(30)
+    * Date_Of_Birth : DATE
+  }
+
+  entity "Attendance" as Attendance {
+    * Emp_ID : VARCHAR(20) <<PK, FK>>
+    * Att_Date : DATE <<PK>>
+    --
+    * Status : VARCHAR(20)
+    Check_In_TS : TIMESTAMP
+    Check_Out_TS : TIMESTAMP
+  }
+
+  entity "Shift" as Shift {
+    * Shift_ID : VARCHAR(20) <<PK>>
+    --
+    * Shift_Name : VARCHAR(50)
+    * Start_TS : TIMESTAMP
+    * End_TS : TIMESTAMP
+  }
+
+  entity "Employee_Shift" as Employee_Shift {
+    * Emp_ID : VARCHAR(20) <<PK, FK>>
+    * Shift_ID : VARCHAR(20) <<PK, FK>>
+  }
+}
+
+package "Company & Procurement Domain" {
+  entity "Company" as Company {
+    * Company_ID : VARCHAR(20) <<PK>>
+    --
+    * Company_Name : VARCHAR(100)
+    * Company_Email : VARCHAR(100) <<UNIQUE>>
+    * GSTIN : VARCHAR(15) <<UNIQUE>>
+    * isActive : BOOLEAN
+    * CP_Name : VARCHAR(100)
+    * CP_Phone : VARCHAR(15)
+    * CP_Email : VARCHAR(100)
+    * Rep_Emp_ID : VARCHAR(20) <<FK>>
+  }
+
+  entity "Company_Type" as Company_Type {
+    * Company_ID : VARCHAR(20) <<PK, FK>>
+    * Company_Type : VARCHAR(50) <<PK>>
+  }
+
+  entity "Company_Location" as Company_Location {
+    * Company_ID : VARCHAR(20) <<PK, FK>>
+    * PIN : VARCHAR(10) <<PK>>
+    --
+    * City : VARCHAR(50)
+    * State : VARCHAR(50)
+  }
+
+  entity "RawMaterial" as RawMaterial {
+    * Material_ID : VARCHAR(20) <<PK>>
+    --
+    * Material_Name : VARCHAR(100)
+    * Category : VARCHAR(50)
+    * Unit_Of_Measure : VARCHAR(20)
+    * Reorder_Level : NUMERIC(10,2)
+  }
+
+  entity "Company_RawMaterial" as Company_RawMaterial {
+    * Company_ID : VARCHAR(20) <<PK, FK>>
+    * Material_ID : VARCHAR(20) <<PK, FK>>
+  }
+
+  entity "PurchaseOrder" as PurchaseOrder {
+    * Order_ID : VARCHAR(20) <<PK>>
+    --
+    * Order_TS : TIMESTAMP
+    * Status : VARCHAR(30)
+    * Dept_ID : VARCHAR(20) <<FK>>
+  }
+
+  entity "PurchaseOrder_RawMaterial" as PurchaseOrder_RawMaterial {
+    * Order_ID : VARCHAR(20) <<PK, FK>>
+    * Material_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Unit_Price : NUMERIC(12,2)
+  }
+
+  entity "OrderInvoice" as OrderInvoice {
+    * Invoice_ID : VARCHAR(20) <<PK>>
+    --
+    * Invoice_TS : TIMESTAMP
+    * Invoice_Type : VARCHAR(30)
+    * Total_Amount : NUMERIC(12,2)
+    * Tax_Amount : NUMERIC(12,2)
+    * Discount : NUMERIC(12,2)
+    * Final_Amount : NUMERIC(12,2)
+    * Payment_Status : VARCHAR(10)
+    * Due_Date : DATE
+  }
+
+  entity "PO_Company" as PO_Company {
+    * Order_ID : VARCHAR(20) <<PK, FK>>
+    * Company_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Expected_Order_Completion : DATE
+    * Invoice_ID : VARCHAR(20) <<FK, UNIQUE>>
+  }
+
+  entity "Vehicle" as Vehicle {
+    * VehicleNo : VARCHAR(20) <<PK>>
+    --
+    * VehicleType : VARCHAR(30)
+    * Driver_Name : VARCHAR(100)
+    * License_Number : VARCHAR(30) <<UNIQUE>>
+    * Driver_Phone : VARCHAR(15)
+    * Company_ID : VARCHAR(20) <<FK>>
+  }
+
+  entity "Consignment" as Consignment {
+    * Consignment_ID : VARCHAR(20) <<PK>>
+    --
+    * Status : VARCHAR(30)
+    Delivered_TS : TIMESTAMP
+    * VehicleNo : VARCHAR(20) <<FK>>
+    * Warehouse_ID : VARCHAR(20) <<FK>>
+    * Order_ID : VARCHAR(20) <<FK>>
+    Transport_CP_Name : VARCHAR(100)
+    Transport_CP_Phone : VARCHAR(15)
+    Transport_CP_Email : VARCHAR(100)
+    Expected_Arrival_Date : DATE
+  }
+
+  entity "Consignment_RawMaterial" as Consignment_RawMaterial {
+    * Consignment_ID : VARCHAR(20) <<PK, FK>>
+    * Material_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Qty_Delivered : NUMERIC(10,2)
+  }
+}
+
+package "Warehouse & Inventory Domain" {
+  entity "Warehouse" as Warehouse {
+    * Warehouse_ID : VARCHAR(20) <<PK>>
+    --
+    * Zone : VARCHAR(50)
+    * isActive : BOOLEAN
+    * Capacity : NUMERIC(10,2)
+    * Dept_ID : VARCHAR(20) <<FK>>
+  }
+
+  entity "RawMaterial_Warehouse" as RawMaterial_Warehouse {
+    * Material_ID : VARCHAR(20) <<PK, FK>>
+    * Warehouse_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Qty_Stock : NUMERIC(10,2)
+  }
+
+  entity "RawMaterial_Department" as RawMaterial_Department {
+    * Material_ID : VARCHAR(20) <<PK, FK>>
+    * Dept_ID : VARCHAR(20) <<PK, FK>>
+  }
+}
+
+package "Production & Quality Domain" {
+  entity "FinalMaterial" as FinalMaterial {
+    * Product_ID : VARCHAR(20) <<PK>>
+    --
+    * Product_Name : VARCHAR(100)
+    * Grade : VARCHAR(20)
+    * Fabric_Type : VARCHAR(50)
+    * Colour : VARCHAR(50)
+    * Reorder_Level : NUMERIC(10,2)
+  }
+
+  entity "ProductionOrder" as ProductionOrder {
+    * Order_ID : VARCHAR(20) <<PK>>
+    --
+    * Start_Date : DATE
+    * Expected_End_Date : DATE
+    * Status : VARCHAR(30)
+    * Dept_ID : VARCHAR(20) <<FK>>
+    * Product_ID : VARCHAR(20) <<FK>>
+    * Expected_Qty_Output : NUMERIC(10,2)
+  }
+
+  entity "ProductionOrder_RawMaterial_Warehouse" as ProductionOrder_RawMaterial_Warehouse {
+    * Order_ID : VARCHAR(20) <<PK, FK>>
+    * Material_ID : VARCHAR(20) <<PK, FK>>
+    * Warehouse_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Qty_Required : NUMERIC(10,2)
+  }
+
+  entity "PhaseExecution" as PhaseExecution {
+    * Order_ID : VARCHAR(20) <<PK, FK>>
+    * Seq_No : INT <<PK>>
+    --
+    * Qty_Input : NUMERIC(10,2)
+    Qty_Output : NUMERIC(10,2)
+    * Status : VARCHAR(30)
+    Start_TS : TIMESTAMP
+    End_TS : TIMESTAMP
+    * Dept_ID : VARCHAR(20) <<FK>>
+    Product_ID : VARCHAR(20) <<FK>>
+    Qty_Produced : NUMERIC(10,2)
+  }
+
+  entity "PhaseTimeLog" as PhaseTimeLog {
+    * Log_ID : VARCHAR(20) <<PK>>
+    * Order_ID : VARCHAR(20) <<PK, FK>>
+    * Seq_No : INT <<PK, FK>>
+    --
+    * Event : VARCHAR(100)
+    * Event_TS : TIMESTAMP
+    Reason : TEXT
+  }
+
+  entity "PhaseResourceConsumption" as PhaseResourceConsumption {
+    * Consumption_ID : VARCHAR(20) <<PK>>
+    * Order_ID : VARCHAR(20) <<PK, FK>>
+    * Seq_No : INT <<PK, FK>>
+    --
+    * Recorded_TS : TIMESTAMP
+  }
+
+  entity "ResourceConsumed" as ResourceConsumed {
+    * Consumption_ID : VARCHAR(20) <<PK, FK>>
+    * Order_ID : VARCHAR(20) <<PK, FK>>
+    * Seq_No : INT <<PK, FK>>
+    * Resource_Type : VARCHAR(50) <<PK>>
+    --
+    * Unit : VARCHAR(20)
+    * Qty_Consumed : NUMERIC(10,2)
+  }
+
+  entity "PackingBatch" as PackingBatch {
+    * Packing_ID : VARCHAR(20) <<PK>>
+    --
+    * Packing_TS : TIMESTAMP
+    * Total_Qty_Packed : NUMERIC(10,2)
+    * Status : VARCHAR(30)
+    * Dept_ID : VARCHAR(20) <<FK>>
+    Prod_Order_ID : VARCHAR(20) <<FK>>
+    Phase_Seq_No : INT <<FK>>
+    Phase_Status : VARCHAR(30)
+  }
+
+  entity "FabricRoll" as FabricRoll {
+    * Roll_ID : VARCHAR(20) <<PK>>
+    --
+    * Length : NUMERIC(10,2)
+    * Weight : NUMERIC(10,2)
+    * Status : VARCHAR(30)
+    * Packing_ID : VARCHAR(20) <<FK>>
+    * Warehouse_ID : VARCHAR(20) <<FK>>
+    Storage_Rack : VARCHAR(30)
+    * Product_ID : VARCHAR(20) <<FK>>
+    * Qty_Stored : NUMERIC(10,2)
+  }
+}
+
+package "Worker & Shift Allocation Domain" {
+  entity "Worker" as Worker {
+    * Worker_ID : VARCHAR(20) <<PK>>
+    --
+    * Worker_Name : VARCHAR(100)
+    * Phone : VARCHAR(15)
+    * Worker_Role : VARCHAR(50)
+    * isActive : BOOLEAN
+    * Emp_ID : VARCHAR(20) <<FK>>
+  }
+
+  entity "Worker_Department" as Worker_Department {
+    * Worker_ID : VARCHAR(20) <<PK, FK>>
+    * Dept_ID : VARCHAR(20) <<PK, FK>>
+  }
+
+  entity "WorkerDept_Shift" as WorkerDept_Shift {
+    * Worker_ID : VARCHAR(20) <<PK, FK>>
+    * Dept_ID : VARCHAR(20) <<PK, FK>>
+    * Shift_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Wages : NUMERIC(10,2)
+  }
+
+  entity "Worker_PackingBatch" as Worker_PackingBatch {
+    * Worker_ID : VARCHAR(20) <<PK, FK>>
+    * Packing_ID : VARCHAR(20) <<PK, FK>>
+  }
+
+  entity "WorkerPacking_Shift" as WorkerPacking_Shift {
+    * Worker_ID : VARCHAR(20) <<PK, FK>>
+    * Packing_ID : VARCHAR(20) <<PK, FK>>
+    * Shift_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Wages : NUMERIC(10,2)
+  }
+
+  entity "Worker_Warehouse" as Worker_Warehouse {
+    * Worker_ID : VARCHAR(20) <<PK, FK>>
+    * Warehouse_ID : VARCHAR(20) <<PK, FK>>
+  }
+
+  entity "WorkerWarehouse_Shift" as WorkerWarehouse_Shift {
+    * Worker_ID : VARCHAR(20) <<PK, FK>>
+    * Warehouse_ID : VARCHAR(20) <<PK, FK>>
+    * Shift_ID : VARCHAR(20) <<PK, FK>>
+    --
+    * Wages : NUMERIC(10,2)
+  }
+}
+
+' Relationships & Foreign Key Connections
+Employee }|..|| Department : "belongs to"
+Employee }|..|| Employee : "supervised by"
+Department ||..o| Employee : "managed by"
+ExtraEmployeeDetails ||..|| Employee : "1:1 extension"
+Dependent }|..|| Employee : "dependent of"
+Attendance }|..|| Employee : "recorded for"
+Employee_Shift }|..|| Employee
+Employee_Shift }|..|| Shift
+
+Company }|..|| Employee : "represented by"
+Company_Type }|..|| Company
+Company_Location }|..|| Company
+Company_RawMaterial }|..|| Company
+Company_RawMaterial }|..|| RawMaterial
+
+PurchaseOrder }|..|| Department : "managed by"
+PurchaseOrder_RawMaterial }|..|| PurchaseOrder
+PurchaseOrder_RawMaterial }|..|| RawMaterial
+
+PO_Company }|..|| PurchaseOrder
+PO_Company }|..|| Company
+PO_Company ||..|| OrderInvoice : "linked to"
+
+Vehicle }|..|| Company : "owned by"
+Consignment }|..|| Vehicle : "transported by"
+Consignment }|..|| Warehouse : "delivered to"
+Consignment }|..|| PurchaseOrder : "fulfills"
+Consignment_RawMaterial }|..|| Consignment
+Consignment_RawMaterial }|..|| RawMaterial
+
+Warehouse }|..|| Department : "managed by"
+RawMaterial_Warehouse }|..|| RawMaterial
+RawMaterial_Warehouse }|..|| Warehouse
+RawMaterial_Department }|..|| RawMaterial
+RawMaterial_Department }|..|| Department
+
+ProductionOrder }|..|| Department : "planned by"
+ProductionOrder }|..|| FinalMaterial : "produces"
+ProductionOrder_RawMaterial_Warehouse }|..|| ProductionOrder
+ProductionOrder_RawMaterial_Warehouse }|..|| RawMaterial_Warehouse
+
+PhaseExecution }|..|| ProductionOrder : "phase of"
+PhaseExecution }|..|| Department : "executed in"
+PhaseExecution }|..o| FinalMaterial
+PhaseTimeLog }|..|| PhaseExecution
+PhaseResourceConsumption }|..|| PhaseExecution
+ResourceConsumed }|..|| PhaseResourceConsumption
+
+PackingBatch }|..|| Department
+PackingBatch }|..o| PhaseExecution
+FabricRoll }|..|| PackingBatch
+FabricRoll }|..|| Warehouse
+FabricRoll }|..|| FinalMaterial
+
+Worker }|..|| Employee : "owned by"
+Worker_Department }|..|| Worker
+Worker_Department }|..|| Department
+WorkerDept_Shift }|..|| Worker_Department
+WorkerDept_Shift }|..|| Shift
+
+Worker_PackingBatch }|..|| Worker
+Worker_PackingBatch }|..|| PackingBatch
+WorkerPacking_Shift }|..|| Worker_PackingBatch
+WorkerPacking_Shift }|..|| Shift
+
+Worker_Warehouse }|..|| Worker
+Worker_Warehouse }|..|| Warehouse
+WorkerWarehouse_Shift }|..|| Worker_Warehouse
+WorkerWarehouse_Shift }|..|| Shift
+
+@enduml

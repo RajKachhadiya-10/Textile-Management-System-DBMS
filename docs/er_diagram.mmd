@@ -1,0 +1,57 @@
+erDiagram
+    Department ||--o{ Employee : "employs"
+    Department ||--o| Employee : "managed_by"
+    Employee ||--o{ Employee : "supervises"
+    Employee ||--|| ExtraEmployeeDetails : "has_details"
+    Employee ||--o{ Dependent : "has_dependent"
+    Employee ||--o{ Attendance : "logs_attendance"
+    Employee }|--|{ Shift : "works_shift"
+
+    Company ||--o{ Employee : "rep_by"
+    Company ||--o{ Company_Type : "has_type"
+    Company ||--o{ Company_Location : "located_at"
+    Company }|--|{ RawMaterial : "supplies"
+    
+    PurchaseOrder }|--|| Department : "issued_by"
+    PurchaseOrder }|--|{ RawMaterial : "contains"
+    PurchaseOrder ||--|| PO_Company : "places_with"
+    PO_Company ||--|| OrderInvoice : "invoiced_by"
+
+    Vehicle }|--|| Company : "owned_by"
+    Consignment }|--|| Vehicle : "shipped_via"
+    Consignment }|--|| Warehouse : "delivered_to"
+    Consignment }|--|| PurchaseOrder : "originates_from"
+    Consignment }|--|{ RawMaterial : "carries"
+
+    Warehouse }|--|| Department : "managed_by"
+    Warehouse }|--|{ RawMaterial : "stores"
+    Department }|--|{ RawMaterial : "uses"
+
+    ProductionOrder }|--|| Department : "executes"
+    ProductionOrder }|--|| FinalMaterial : "targets"
+    ProductionOrder }|--|{ RawMaterial_Warehouse : "requires"
+
+    ProductionOrder ||--o{ PhaseExecution : "has_phase"
+    PhaseExecution }|--|| Department : "in_dept"
+    PhaseExecution ||--o{ PhaseTimeLog : "logs_event"
+    PhaseExecution ||--o{ PhaseResourceConsumption : "consumes_resources"
+    PhaseResourceConsumption ||--o{ ResourceConsumed : "details"
+
+    PackingBatch }|--|| Department : "packed_in"
+    PackingBatch }|--o| PhaseExecution : "packs_phase"
+    PackingBatch ||--o{ FabricRoll : "contains_rolls"
+    FabricRoll }|--|| Warehouse : "stored_in"
+    FabricRoll }|--|| FinalMaterial : "made_of"
+
+    Worker }|--|| Employee : "belongs_to"
+    Worker }|--|{ Department : "assigned_dept"
+    WorkerDept_Shift }|--|| Worker_Department : "shift_wages"
+    WorkerDept_Shift }|--|| Shift : "during"
+
+    Worker }|--|{ PackingBatch : "assigned_batch"
+    WorkerPacking_Shift }|--|| Worker_PackingBatch : "batch_wages"
+    WorkerPacking_Shift }|--|| Shift : "during"
+
+    Worker }|--|{ Warehouse : "assigned_wh"
+    WorkerWarehouse_Shift }|--|| Worker_Warehouse : "wh_wages"
+    WorkerWarehouse_Shift }|--|| Shift : "during"

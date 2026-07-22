@@ -34,6 +34,16 @@ The system covers 7 core operational business domains:
 
 ---
 
+## 🗺️ Entity-Relationship (ER) Diagram
+
+The system architecture is modeled with **21 Logical ER Entities** and **34 Physical Relations** (including weak entities, junction tables, and 3-way ternary wage/resource aggregations).
+
+![Textile DBMS ER Diagram](docs/ER_diagram.png)
+
+*Source files available in PlantUML ([`docs/er_diagram.puml`](docs/er_diagram.puml)) and Mermaid ([`docs/er_diagram.mmd`](docs/er_diagram.mmd)).*
+
+---
+
 ## 📐 Formal Normalization Summary (5NF Proof)
 
 All 34 relations in the schema have been derived from scratch and verified to achieve **Fifth Normal Form (5NF)**.
