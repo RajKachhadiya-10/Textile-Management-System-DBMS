@@ -28,3 +28,4 @@ ENV/
 *.tmp
 *.sqlite
 *.db
+*.dia_
