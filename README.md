@@ -42,7 +42,7 @@ The system architecture is modeled with **21 Logical ER Entities** and **34 Phys
   <img src="docs/ER_diagram.png" alt="Textile DBMS ER Diagram" width="100%" max-width="900px" />
 </p>
 
-*Source files available in Dia ([`docs/ProjectDBMSFinal.dia`](docs/ProjectDBMSFinal.dia)), PlantUML ([`docs/er_diagram.puml`](docs/er_diagram.puml)), and Mermaid ([`docs/er_diagram.mmd`](docs/er_diagram.mmd)).*
+*Source files available in Simplified PlantUML ([`docs/er_diagram.puml`](docs/er_diagram.puml)), Mermaid ([`docs/er_diagram.mmd`](docs/er_diagram.mmd)), Dia ([`docs/ProjectDBMSFinal.dia`](docs/ProjectDBMSFinal.dia)), and Full Backup ([`docs/ER_diagram_full.puml`](docs/ER_diagram_full.puml)).*
 
 ---
 
